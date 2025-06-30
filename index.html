@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkly תמיכה - אנחנו כאן בשבילך</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6B46FF;
+            --primary-dark: #5835E6;
+            --primary-light: #8B6BFF;
+            --secondary: #9B7BFF;
+            --background: #6B46FF;
+            --surface: #ffffff;
+            --surface-purple: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --text-on-white: #333333;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --shadow: rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Rubik', Arial, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            direction: rtl;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: transparent;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: var(--surface);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 2rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .link-card {
+            background: var(--surface-purple);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transition: all 0.5s ease;
+        }
+
+        .link-card:hover::before {
+            top: -150%;
+            left: -150%;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .link-card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            filter: grayscale(0%);
+        }
+
+        .link-card h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .link-card p {
+            color: var(--text-secondary);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .faq-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text);
+        }
+
+        .faq-item {
+            background: var(--surface);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .faq-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 32px var(--shadow);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-on-white);
+            background: var(--surface);
+        }
+
+        .faq-question:hover {
+            background: #f8f8f8;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #666;
+            line-height: 1.8;
+            background: var(--surface);
+        }
+
+        .faq-answer.active {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 300px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+            color: var(--primary);
+        }
+
+        .faq-icon.active {
+            transform: rotate(180deg);
+        }
+
+        /* Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            background: var(--surface);
+            color: var(--primary);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px var(--shadow);
+        }
+
+        .chat-notification {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: #FF4757;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 6rem;
+            left: 2rem;
+            width: 350px;
+            height: auto;
+            max-height: 400px;
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px var(--shadow);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem 1rem 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #f8f9fa;
+        }
+
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.user {
+            background: var(--primary);
+            color: white;
+            align-self: flex-start;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot {
+            background: #e8e8e8;
+            color: var(--text-on-white);
+            align-self: flex-end;
+            border-bottom-left-radius: 4px;
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .whatsapp-link:hover {
+            background: #1ebe57;
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            background: transparent;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Parking Illustration */
+        .parking-illustration {
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto;
+            opacity: 0.9;
+        }
+
+        /* Buttons */
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .faq-title {
+                font-size: 1.75rem;
+            }
+
+            .chat-window {
+                width: 90%;
+                left: 5%;
+                right: 5%;
+            }
+
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .logo img {
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <img src="parkly-logo.png" alt="Parkly">
+            </a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>איך נוכל לעזור לך?</h1>
+        <p class="subtitle">מצא תשובות על חיפוש חניונים, השוואת מחירים וניווט</p>
+    </section>
+
+    <section class="quick-links">
+        <div class="link-card" onclick="scrollToFAQ()">
+            <div class="link-card-icon">🔍</div>
+            <h3>חיפוש חניונים</h3>
+            <p>למד איך למצוא את החניון הטוב ביותר</p>
+        </div>
+        <div class="link-card" onclick="scrollToFAQ()">
+            <div class="link-card-icon">📊</div>
+            <h3>השוואת מחירים</h3>
+            <p>הבן איך להשוות מחירים ומרחקים</p>
+        </div>
+        <div class="link-card" onclick="scrollToFAQ()">
+            <div class="link-card-icon">🗺️</div>
+            <h3>ניווט לחניון</h3>
+            <p>למד על השימוש ב-Waze ו-Google Maps</p>
+        </div>
+        <div class="link-card" onclick="openChat()">
+            <div class="link-card-icon">💬</div>
+            <h3>צור קשר עם התמיכה</h3>
+            <p>שוחח עם צוות התמיכה שלנו</p>
+        </div>
+    </section>
+
+    <section class="faq-section" id="faq">
+        <h2 class="faq-title">שאלות נפוצות</h2>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>איך אני מוצא חניה עם Parkly?</span>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="faq-answer">
+                מציאת חניה היא פשוטה! פתח את אפליקציית Parkly, הזן את היעד שלך, וראה רשימה של חניונים זמינים עם המחירים והמרחקים שלהם. בחר את החניון המתאים לך ביותר, ולחץ על כפתור הניווט כדי לפתוח את Google Maps או Waze עם ההנחיות ישירות לחניון שבחרת.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>איך Parkly מציג לי מחירים?</span>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="faq-answer">
+                Parkly אוסף מידע עדכני על מחירי חניונים באזור היעד שלך ומציג אותם בצורה ברורה. אתה יכול להשוות מחירים לפי שעה, יום או תעריפים מיוחדים. שים לב שהתשלום עצמו מתבצע ישירות בחניון - אנחנו רק עוזרים לך למצוא את האופציה הטובה ביותר!
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span>איזה אפליקציות ניווט נתמכות?</span>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="faq-answer">
+                Parkly תומך ב-Google Maps ו-Waze. ברגע שתבחר חניון, תוכל ללחוץ על האפליקציה המועדפת עליך והיא תיפתח אוטומטית עם המסלול המדויק לחניון שבחרת. וודא שיש לך אחת מהאפליקציות מותקנת במכשיר שלך.
+            </div>
+        </div>
+    </section>
+
+    <div class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">
+            <div class="chat-notification">1</div>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+            </svg>
+        </button>
+
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div>
+                    <strong>תמיכת Parkly</strong>
+                    <div style="font-size: 0.8rem; opacity: 0.9;">אנחנו בדרך כלל עונים תוך דקות</div>
+                </div>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">×</button>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    👋 שלום! אני כאן כדי לעזור לך למצוא את החניון המושלם. יש לך שאלות על חיפוש חניונים, השוואת מחירים או ניווט עם Waze/Google Maps?
+                </div>
+                <div class="message bot">
+                    💬 תוכל גם לפנות אלינו ישירות ב-WhatsApp:
+                    <br>
+                    <a href="https://api.whatsapp.com/send?phone=972534202016" target="_blank" class="whatsapp-link" style="display: inline-block; margin-top: 0.75rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="vertical-align: middle; margin-right: 0.5rem;">
+                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                        </svg>
+                        שוחח איתנו ב-WhatsApp
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Parkly. כל הזכויות שמורות. | מדיניות פרטיות | תנאי שימוש</p>
+    </footer>
+
+    <script>
+        // Toggle FAQ answers
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('.faq-icon');
+
+            answer.classList.toggle('active');
+            icon.classList.toggle('active');
+        }
+
+        // Scroll to FAQ section
+        function scrollToFAQ() {
+            document.getElementById('faq').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Chat functionality
+        let chatOpen = false;
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatOpen) {
+                chatWindow.classList.add('active');
+                document.querySelector('.chat-notification').style.display = 'none';
+            } else {
+                chatWindow.classList.remove('active');
+            }
+        }
+
+        function openChat() {
+            if (!chatOpen) {
+                toggleChat();
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
